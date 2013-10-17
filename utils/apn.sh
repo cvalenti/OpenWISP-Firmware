@@ -17,6 +17,31 @@ use_gcom() {
   gcom -s $_scriptname -d $SERVICE_PORT
 }
 
+set_apn() {
+  local apn="$1"
+  uci set network.umts.apn=$apn
+}
+
+force_pppd() {
+  pppd $COM_PORT nodetach &
+  LASTPID=$!
+  sleep 5
+  ifdown umts
+  kill "$LASTPID"
+  ifup umts
+}
+
+# Deregister from the network
+force_deregister() {
+  echo -e -n "AT+COPS=2\r" > $SERVICE_PORT
+}
+
+# Force registration to a specific operator
+manual_registration() {                                   
+  local operator=$1                                       
+  echo -e -n "AT+COPS=1,2,$operator\r" > $SERVICE_PORT    
+} 
+
 while true; do
 
   APN_NAME=$(uci get network.umts.apn) 
@@ -48,15 +73,16 @@ while true; do
     esac
 
     if [ $RET2 -eq 0 -a -n $APN_NAME ]; then
-      uci set network.umts.apn=$APN_NAME
+      set_apn $APN_NAME
       logger $0 "APN is $APN_NAME"
+      force_pppd
     fi
 
     STATUS=`use_gcom $REG_SCRIPT_PATH | grep [0-2],[0-5] | cut -d',' -f2 | cut -c 1`
     if [ $STATUS -eq 5 ]; then
-      echo -e -n "AT+COPS=2\r" > $SERVICE_PORT
+      force_deregister
       sleep 5
-      echo -e -n "AT+COPS=1,2,$OP_ID\r" > $SERVICE_PORT
+      manual_registration $OP_ID
       sleep 10
     fi
 
