@@ -1,6 +1,7 @@
 #!/bin/sh
 
 SERVICE_PORT="/dev/ttyUSB2"
+COM_PORT=$(uci get network.umts.device)
 IMSI_SCRIPT_PATH="/etc/gcom/getimsi.gcom"
 REG_SCRIPT_PATH="/etc/gcom/getreginfo.gcom"
 H3G_IT_ID="22299"
@@ -18,8 +19,8 @@ use_gcom() {
 }
 
 set_apn() {
-  local apn="$1"
-  uci set network.umts.apn=$apn
+  local _apn="$1"
+  uci set network.umts.apn=$_apn
 }
 
 force_pppd() {
