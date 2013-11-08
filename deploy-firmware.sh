@@ -482,7 +482,7 @@ EOF
 ::respawn:/etc/owispmanager/apn.sh
 EOF
 
-  sed -i -e '/s/failure 5/failure 4/g' -e '/s/interval 1/interval 65535/g' $ROOTFS/etc/ppp/options
+  sed -i -e 's/failure 5/failure 4/g' -e 's/interval 1/interval 65535/g' $ROOTFS/etc/ppp/options
 fi
 
 if [ "$MESH_ENABLE" == "1" ]; then
