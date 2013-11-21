@@ -467,9 +467,9 @@ EOF
   # cp $TOOLS/utils/umts.sh $ROOTFS/etc/owispmanager/umts.sh
   # chmod +x $ROOTFS/etc/owispmanager/umts.sh
   cp -R $TOOLS/utils/umts-wd.sh $ROOTFS/etc/owispmanager/umts-wd.sh
-  chmod +x $TOOLS/utils/umts-wd.sh $ROOTFS/etc/owispmanager/umts-wd.sh
+  chmod +x $ROOTFS/etc/owispmanager/umts-wd.sh
   cp -R $TOOLS/utils/apn.sh $ROOTFS/etc/owispmanager/apn.sh
-  chmod +x $TOOLS/utils/apn.sh $ROOTFS/etc/owispmanager/apn.sh
+  chmod +x $ROOTFS/etc/owispmanager/apn.sh
 
   cp -R $TOOLS/utils/usb_serial $ROOTFS/etc/hotplug.d/usb/30-serial
   cp -R $TOOLS/utils/apn_remove $ROOTFS/etc/hotplug.d/usb/40-apn
